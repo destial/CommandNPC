@@ -135,6 +135,27 @@ public class NPCListener implements Listener {
 								continue;
 							}
 						}
+						
+						//------------ RedirectPlus ------------
+						if(command.getCommand().toLowerCase().startsWith("sg") || command.getCommand().toLowerCase().startsWith("uhc")) {
+							if(PluginSettings.BungeeCord.getBoolean()) {
+								if(command.getDelay() > 0) {
+									scheduler.scheduleSyncDelayedTask(CommandNPC.getInstance(), () -> {
+										BungeeCordUtil.redirectPlus(player, command.getCommand().toLowerCase());
+									}, command.getDelay());
+								}else{
+									BungeeCordUtil.redirectPlus(player, command.getCommand().toLowerCase());
+								}
+								executeCooldown(player.getUniqueId(), npc.getId(), command.getID(), command.getCooldown());
+								continue;
+							}else{
+								Messaging.sendError(player, "Inform the system administrator to look in console for error.");
+								CommandNPC.getInstance().logError("BungeeCord Command", "NPCListener", "onClick(Player, NPC, ClickType)", "BungeeCord is " +
+										"disabled in config.yml, yet an NPC has the command /server registered to it.");
+								continue;
+							}
+						}
+
 						//------------ Execute Command ------------
 						if(!command.inConsole()) {
 							try{

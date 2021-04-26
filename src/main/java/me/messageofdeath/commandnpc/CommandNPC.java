@@ -70,6 +70,7 @@ public class CommandNPC extends JavaPlugin {
 		CitizenCommandRegister commandRegister = new CitizenCommandRegister(this);
 		/** --------------Initiation of the Listener-------------- **/
 		super.getServer().getPluginManager().registerEvents(new NPCListener(), this);
+		super.getServer().getMessenger().registerOutgoingPluginChannel(this, "martenm:redirectplus");
 		/** --------------Initiation and Loading of Databases-------------- **/
 		this.log("Initiating Database", true);
 		CommandNPC.database = new CommandDatabase(this);

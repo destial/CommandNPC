@@ -8,6 +8,10 @@ import com.google.common.io.ByteStreams;
 
 import me.messageofdeath.commandnpc.CommandNPC;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class BungeeCordUtil {
 	
 	public static void setupUtil() {
@@ -25,5 +29,18 @@ public class BungeeCordUtil {
 		out.writeUTF("Connect");
 		out.writeUTF(serverName);
 		player.sendPluginMessage(CommandNPC.getInstance(), "BungeeCord", out.toByteArray());
+	}
+
+	public static void redirectPlus(Player player, String command) {
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream(stream);
+		try {
+			out.writeUTF("execute-alias");
+			out.writeUTF(player.getName());
+			out.writeUTF(command.toLowerCase());
+			player.sendPluginMessage(CommandNPC.getInstance(), "martenm:redirectplus", stream.toByteArray());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
